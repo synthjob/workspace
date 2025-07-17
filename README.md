@@ -1,3 +1,8 @@
-Workspace'e Hoş Geldin!
+# WORKSPACE
 
-Burası tamamen kişisel bir çalışma ve test alanıdır. Klasör ve dosyalarım burada saklanıyor.
+---
+
+Modern ve minimalist bir kişisel çalışma alanı deneyimi.
+
+> **Kütüphane**  
+> Kişisel projeler, testler ve yaratıcı çalışmaların merkezi
