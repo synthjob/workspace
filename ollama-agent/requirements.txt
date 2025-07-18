@@ -1,0 +1,4 @@
+Flask
+requests
+PySide6
+PySide6-QtWebEngine
