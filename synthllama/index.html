@@ -2,56 +2,103 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
+  <title>Synthllama - Yeni Nesil AI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthllama - AI Chatbot</title>
   <style>
-    body { background: #16181d; font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-    .chat-container { background: rgba(255,255,255,0.07); box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18); backdrop-filter: blur(6px); border-radius: 26px; padding: 36px 20px 24px 20px; width: 100%; max-width: 420px; }
-    .chat-header { color: #ffda6a; font-size: 2.2rem; font-weight: bold; text-align: center; margin-bottom: 8px; letter-spacing: 2px; }
-    .subtitle { color: #fff9e1; text-align: center; margin-bottom: 14px; letter-spacing: 1px; font-size: 1rem; }
-    .chat-messages { background: #22232a; border-radius: 14px; padding: 12px; min-height: 230px; max-height: 320px; overflow-y: auto; color: #ffeccc; margin-bottom: 13px; font-size: 1.02em; }
-    .message { margin-bottom: 10px; line-height: 1.5; word-break: break-word; }
-    .message.user { color: #71fdca; text-align: right; }
-    .message.ai { color: #fabfff; text-align: left; }
-    .model-selector, #userInput, #sendBtn { margin-top: 8px; }
-    .input-container { display: flex; gap: 5px; }
-    #userInput { flex:1; padding:9px 10px; border-radius: 7px; border: none; background:#1e2026; color:#fff9e1; font-size:1em; outline:none; }
-    #sendBtn { background: #ffc22b; color: #1e2026; border: none; border-radius: 7px; padding: 10px 14px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-    #sendBtn:hover { background: #e7a600; }
-    /* Status bar */
-    .status-bar { display:flex; align-items:center; gap:9px; color:#b6bbc5; font-size:0.89em; margin:14px 0 7px 0; }
-    .status-dot { width:10px; height:10px; border-radius:50%; display:inline-block; background:#ffe755; margin-right:5px; }
-    .status-dot.online { background:#63ed76; }
-    .status-dot.offline { background:#e34f4f; }
-    .status-dot.unknown { background:#ffe755; }
-    @media (max-width:510px) {
-      .chat-container{ max-width:98vw; padding:10px 2vw 16px 2vw; }
-      .chat-messages {min-height:150px;}
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%; width: 100%;
+      box-sizing: border-box;
+      background: #f6f7f9;
+      font-family: 'Segoe UI', 'Roboto', 'San Francisco', Arial, sans-serif;
+      color: #222;
     }
-    @media (prefers-color-scheme: dark) {
-      body { background: #16181d; }
-      .chat-container { background: rgba(18,19,23, 0.81); color: #ffeccc; }
-      .chat-messages { background: #191a1f; }
-      #userInput { background:#22232a; color:#fafad2 }
+    body {
+      display: flex; flex-direction: column;
+      min-height: 100vh; height: 100vh;
+      width: 100vw;
+    }
+    #chat-container {
+      flex: 1 1 0;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      width: 100vw;
+      height: 100vh;
+      max-width: none;
+      margin: 0;
+    }
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 48px 0 10px 0;
+      width: 100vw;
+      box-sizing: border-box;
+    }
+    .message {
+      max-width: 720px;
+      margin: 0 auto 12px auto;
+      padding: 11px 14px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      font-size: 1.08em;
+      line-height: 1.53;
+      word-break: break-word;
+    }
+    .message.user { background: #dcf4ff; color: #222;}
+    .message.ai { background: #fff; color: #0654ba;}
+    #input-bar {
+      display: flex;
+      padding: 0 18vw 26px 18vw;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    #userInput {
+      flex: 1;
+      font-size: 1.05em;
+      padding: 13px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #f9fafd;
+      outline: none;
+      resize: none;
+      min-height: 46px;
+      max-height: 120px;
+    }
+    #sendBtn {
+      background: #1479ff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: 500;
+      padding: 13px 22px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    #sendBtn:hover { background: #0d3998; }
+    #fileInput { display: none; }
+    #attachBtn {
+      background: transparent; border: none; font-size: 1.5em; color: #b8b8c5; cursor: pointer;
+      padding-right: 8px;
+      transition: color 0.18s;
+    }
+    #attachBtn:hover { color: #0076fa; }
+    @media (max-width: 800px) {
+      #input-bar { padding: 0 2vw 26px 2vw; }
+      .message { margin-left: 1vw; margin-right: 1vw;}
     }
   </style>
 </head>
 <body>
-  <div class="chat-container">
-    <div class="chat-header">🦙 Synthllama</div>
-    <div class="subtitle">AI Destekli Masaüstü Chatbot · Ollama Entegrasyonu</div>
-    <div class="status-bar"><span class="status-dot unknown" id="statusDot"></span><span id="connectionStatus">Bağlantı kontrol ediliyor...</span><span id="modelInfo">Model: Yükleniyor...</span></div>
-    <div class="chat-messages" id="chatMessages"><div class="message ai">👋 Merhaba! Ben Synthllama. Size nasıl yardımcı olabilirim?</div></div>
-    <div class="input-container">
-      <select class="model-selector" id="modelSelector">
-        <option value="llama2">Llama 2</option>
-        <option value="codellama">Code Llama</option>
-        <option value="mistral">Mistral</option>
-        <option value="neural-chat">Neural Chat</option>
-      </select>
-      <input type="text" id="userInput" placeholder="Mesajınızı yazın..." autocomplete="off">
-      <button id="sendBtn">Gönder</button>
-    </div>
+  <div id="chat-container">
+    <div id="messages"></div>
+    <form id="input-bar" autocomplete="off">
+      <button id="attachBtn" type="button" title="Dosya veya görsel ekle">📎</button>
+      <input type="file" id="fileInput" accept="image/*">
+      <textarea id="userInput" placeholder="Bir şeyler yazın..." rows="1"></textarea>
+      <button id="sendBtn" type="submit">Gönder</button>
+    </form>
   </div>
   <script src="renderer.js"></script>
 </body>
