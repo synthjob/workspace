@@ -1,14 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Synthllama Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synthllama - AI Chatbot</title>
+  <style>
+    body { background: #16181d; font-family: 'Inter', Arial, sans-serif; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .chat-container { background: rgba(255,255,255,0.07); box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18); backdrop-filter: blur(6px); border-radius: 26px; padding: 36px 20px 24px 20px; width: 100%; max-width: 420px; }
+    .chat-header { color: #ffda6a; font-size: 2.2rem; font-weight: bold; text-align: center; margin-bottom: 8px; letter-spacing: 2px; }
+    .subtitle { color: #fff9e1; text-align: center; margin-bottom: 14px; letter-spacing: 1px; font-size: 1rem; }
+    .chat-messages { background: #22232a; border-radius: 14px; padding: 12px; min-height: 230px; max-height: 320px; overflow-y: auto; color: #ffeccc; margin-bottom: 13px; font-size: 1.02em; }
+    .message { margin-bottom: 10px; line-height: 1.5; word-break: break-word; }
+    .message.user { color: #71fdca; text-align: right; }
+    .message.ai { color: #fabfff; text-align: left; }
+    .model-selector, #userInput, #sendBtn { margin-top: 8px; }
+    .input-container { display: flex; gap: 5px; }
+    #userInput { flex:1; padding:9px 10px; border-radius: 7px; border: none; background:#1e2026; color:#fff9e1; font-size:1em; outline:none; }
+    #sendBtn { background: #ffc22b; color: #1e2026; border: none; border-radius: 7px; padding: 10px 14px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    #sendBtn:hover { background: #e7a600; }
+    /* Status bar */
+    .status-bar { display:flex; align-items:center; gap:9px; color:#b6bbc5; font-size:0.89em; margin:14px 0 7px 0; }
+    .status-dot { width:10px; height:10px; border-radius:50%; display:inline-block; background:#ffe755; margin-right:5px; }
+    .status-dot.online { background:#63ed76; }
+    .status-dot.offline { background:#e34f4f; }
+    .status-dot.unknown { background:#ffe755; }
+    @media (max-width:510px) {
+      .chat-container{ max-width:98vw; padding:10px 2vw 16px 2vw; }
+      .chat-messages {min-height:150px;}
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #16181d; }
+      .chat-container { background: rgba(18,19,23, 0.81); color: #ffeccc; }
+      .chat-messages { background: #191a1f; }
+      #userInput { background:#22232a; color:#fafad2 }
+    }
+  </style>
 </head>
 <body>
-  <h1>Synthllama (Ollama Chatbot)</h1>
-  <textarea id="chatArea" rows="20" cols="60" readonly></textarea><br>
-  <input type="text" id="userInput" placeholder="Mesajını yaz...">
-  <button id="sendBtn">Gönder</button>
+  <div class="chat-container">
+    <div class="chat-header">🦙 Synthllama</div>
+    <div class="subtitle">AI Destekli Masaüstü Chatbot · Ollama Entegrasyonu</div>
+    <div class="status-bar"><span class="status-dot unknown" id="statusDot"></span><span id="connectionStatus">Bağlantı kontrol ediliyor...</span><span id="modelInfo">Model: Yükleniyor...</span></div>
+    <div class="chat-messages" id="chatMessages"><div class="message ai">👋 Merhaba! Ben Synthllama. Size nasıl yardımcı olabilirim?</div></div>
+    <div class="input-container">
+      <select class="model-selector" id="modelSelector">
+        <option value="llama2">Llama 2</option>
+        <option value="codellama">Code Llama</option>
+        <option value="mistral">Mistral</option>
+        <option value="neural-chat">Neural Chat</option>
+      </select>
+      <input type="text" id="userInput" placeholder="Mesajınızı yazın..." autocomplete="off">
+      <button id="sendBtn">Gönder</button>
+    </div>
+  </div>
   <script src="renderer.js"></script>
 </body>
 </html>
