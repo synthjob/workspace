@@ -1,4 +1,4 @@
-// renderer.js
+// renderer.js - Modern fonksiyonel chat UI ve bağlantı/model kontrolü
 
 const chatArea = document.getElementById('chatArea');
 const userInput = document.getElementById('userInput');
