@@ -5,21 +5,31 @@ Bu klasör, SynthLLaMA ile ilgili tüm proje ve dokümantasyonları içerir.
 - `index.html` : Ana sohbet arayüzü (Ollama ile sohbet)
 - `style.css` : Chat uygulaması için tasarım
 - `app.js` : Sohbetin dinamiği ve arayüz işlevleri
-- `backend.py` : FastAPI backend & Ollama entegrasyonu
+- `server.js` : Node.js/Express backend & Ollama entegrasyonu
 - `changelog.md` : Değişiklik geçmişi
 
-## Kullanım
+## Kurulum ve Kullanım
+
 1. Bu klasörü bilgisayarına klonla veya indir.
-2. Gerekli Python kütüphanelerini yükle:
+
+2. Proje klasörünü başlat:
    ```
-   pip install fastapi uvicorn requests
+   npm init -y
    ```
-3. Ollama'nın arka plandaki API sunucusunun çalıştığından emin ol.
-4. FastAPI backend uygulamasını başlat:
+
+3. Gerekli Node.js paketlerini yükle:
    ```
-   uvicorn backend:app --reload
+   npm install express axios
    ```
-5. Tarayıcıdan `http://localhost:8000` adresine gir ve chat ekranını kullan!
+
+4. Ollama'nın arka plandaki API sunucusunun çalıştığından emin ol.
+
+5. Node.js backend uygulamasını başlat:
+   ```
+   node server.js
+   ```
+
+6. Tarayıcıdan `http://localhost:3000` adresine gir ve chat ekranını kullan!
 
 ## Notlar
 - Kodlar temel örnek olup, özelleştirmeye ve geliştirmeye açıktır.
